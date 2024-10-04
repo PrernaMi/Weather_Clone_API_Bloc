@@ -1,17 +1,17 @@
 class WeatherDataModel {
   CoordModel? coord;
   List<WeatherModel>? weather;
-  String? base;
+  dynamic? base;
   MainModel? main;
-  int? visibility;
+  dynamic? visibility;
   WindModel? wind;
   CloudModel? clouds;
-  int? dt;
+  dynamic? dt;
   SysModel? sys;
-  int? timezone;
-  int? id;
-  String? name;
-  int? cod;
+  dynamic? timezone;
+  dynamic? id;
+  dynamic? name;
+  dynamic? cod;
 
   WeatherDataModel(
       {this.coord,
@@ -53,8 +53,8 @@ class WeatherDataModel {
 }
 
 class CoordModel {
-  double? lon;
-  double? lat;
+  dynamic? lon;
+  dynamic? lat;
 
   CoordModel({this.lon, this.lat});
 
@@ -66,10 +66,10 @@ class CoordModel {
 }
 
 class WeatherModel {
-  int? id;
-  String? main;
-  String? description;
-  String? icon;
+  dynamic? id;
+  dynamic? main;
+  dynamic? description;
+  dynamic? icon;
 
   WeatherModel({this.id, this.main, this.description, this.icon});
 
@@ -83,14 +83,14 @@ class WeatherModel {
 }
 
 class MainModel {
-  double? temp;
-  double? feelsLike;
-  double? tempMin;
-  double? tempMax;
-  int? pressure;
-  int? humidity;
-  int? seaLevel;
-  int? grndLevel;
+  dynamic? temp;
+  dynamic? feelsLike;
+  dynamic? tempMin;
+  dynamic? tempMax;
+  dynamic? pressure;
+  dynamic? humidity;
+  dynamic? seaLevel;
+  dynamic? grndLevel;
 
   MainModel(
       {this.temp,
@@ -116,9 +116,9 @@ class MainModel {
 }
 
 class WindModel {
-  double? speed;
-  int? deg;
-  double? gust;
+  dynamic? speed;
+  dynamic? deg;
+  dynamic? gust;
 
   WindModel({this.speed, this.deg, this.gust});
 
@@ -131,7 +131,7 @@ class WindModel {
 }
 
 class CloudModel {
-  int? all;
+  dynamic? all;
 
   CloudModel({this.all});
 
@@ -142,11 +142,11 @@ class CloudModel {
 }
 
 class SysModel {
-  int? type;
-  int? id;
-  String? country;
-  int? sunrise;
-  int? sunset;
+  dynamic? type;
+  dynamic? id;
+  dynamic? country;
+  dynamic? sunrise;
+  dynamic? sunset;
 
   SysModel({this.type, this.id, this.country, this.sunrise, this.sunset});
 
