@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_api_clone/bloc/weather_bloc.dart';
 import 'package:weather_api_clone/data/remote/api_helper.dart';
 import 'package:weather_api_clone/screens/home_page.dart';
+import 'package:weather_api_clone/screens/view_more.dart';
 
 void main() {
   runApp(

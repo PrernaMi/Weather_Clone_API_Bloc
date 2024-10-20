@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_api_clone/bloc/bloc_event.dart';
+import 'package:weather_api_clone/screens/view_more.dart';
 import 'package:weather_api_clone/utils/color_constant.dart';
 
 import '../bloc/bloc_state.dart';
@@ -16,8 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   MediaQueryData? mqData;
-
-  // bool search = false;
   String searchText = "";
 
   @override
@@ -40,7 +39,6 @@ class _HomePageState extends State<HomePage> {
           if (state is LoadedState) {
             // Process weather data
             var currWeather = state.currentWeather;
-            var hourlyWeather = state.hourlyWeather;
             int timestamp = state.currentWeather!.dt!;
             DateTime date =
                 DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
@@ -50,11 +48,10 @@ class _HomePageState extends State<HomePage> {
             double kelvinFeels = currWeather.main!.feelsLike! - 273.15;
             double kelvinMax = currWeather.main!.tempMax! - 273.15;
             double kelvinMin = currWeather.main!.tempMin! - 273.15;
-            double windSpeedMetersPerSecond = currWeather.wind!.speed!;
+            var windSpeedMetersPerSecond = currWeather.wind!.speed!;
             double windSpeedKilometersPerHour = windSpeedMetersPerSecond * 3.6;
             int visibility = currWeather.visibility!;
             int visibleKm = visibility ~/ 1000;
-
             // Build the weather display UI
             return Container(
               height: mqData!.size.height,
@@ -76,10 +73,11 @@ class _HomePageState extends State<HomePage> {
                         width: mqData!.size.width * 0.95,
                         child: TextField(
                           onEditingComplete: () {
-                            context.read<WeatherBloc>().add(GetCurrentWeather(
-                                city: searchController.text.toString(),
-                                lon: 0,
-                                lat: 0));
+                            context.read<WeatherBloc>().add(
+                                GetCurrentWeather(
+                                    city: searchController.text.toString(),
+                                    lon: 0,
+                                    lat: 0));
                           },
                           controller: searchController,
                           decoration: InputDecoration(
@@ -123,12 +121,14 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Feels like: ${kelvinFeels.toStringAsFixed(0)}°",
+                          Text(
+                              "Feels like: ${kelvinFeels.toStringAsFixed(0)}°",
                               style: TextStyle(fontSize: 15)),
                           Icon(Icons.arrow_upward, color: Colors.red),
                           Text(" ${kelvinMax.toStringAsFixed(0)}°",
                               style: TextStyle(fontSize: 15)),
-                          Icon(Icons.arrow_downward, color: Colors.blueAccent),
+                          Icon(Icons.arrow_downward,
+                              color: Colors.blueAccent),
                           Text(" ${kelvinMin.toStringAsFixed(0)}°",
                               style: TextStyle(fontSize: 15)),
                         ],
@@ -153,11 +153,13 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             "Hourly Forcast",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 16),
                           ),
                           Text(
                             "72 Hours",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 16),
                           )
                         ],
                       ),
@@ -178,23 +180,32 @@ class _HomePageState extends State<HomePage> {
                               DateTime date =
                                   DateTime.fromMillisecondsSinceEpoch(
                                       data![index].dt * 1000);
-                              String time = DateFormat('hh:mm').format(date);
+                              String time =
+                                  DateFormat('hh:mm').format(date);
+                              String hourDate =
+                                  DateFormat('dd/M').format(date);
                               double temp = data[index].main!.temp - 273.15;
                               var iconCode = data[index].weather![0].icon;
                               final iconUrl =
                                   "http://openweathermap.org/img/w/$iconCode.png";
                               return Container(
                                 margin: EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 10),
+                                    vertical: 15, horizontal: 10),
                                 width: mqData!.size.width * 0.2,
                                 decoration: BoxDecoration(
                                   color: Colors.white.withOpacity(0.6),
                                   borderRadius: BorderRadius.circular(40),
                                 ),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
                                   children: [
-                                    Text(time),
+                                    Text(
+                                      time,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(hourDate),
                                     Image.network(iconUrl),
                                     Text('${temp.toStringAsFixed(0)}°C'),
                                     Row(
@@ -202,7 +213,8 @@ class _HomePageState extends State<HomePage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Icon(Icons.water_drop_outlined),
-                                        Text('${data[index].main!.humidity}%'),
+                                        Text(
+                                            '${data[index].main!.humidity}%'),
                                       ],
                                     )
                                   ],
@@ -213,22 +225,28 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         height: mqData!.size.height * 0.01,
                       ),
-                      /*--------View Details------*/
-                      Container(
-                        height: mqData!.size.height * 0.05,
-                        width: mqData!.size.width * 0.4,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(30),
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                            return ViewMore(currentWeather: currWeather);
+                          }));
+                        },
+                        child: Container(
+                          width: mqData!.size.width,
+                          height: mqData!.size.height*0.05,
+                          decoration: BoxDecoration(
+                            color: ColorConst.mColor[2],
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FittedBox(child: Text("View More",style: TextStyle(fontWeight: FontWeight.bold),)),
+                              SizedBox(width: 10,),
+                              Icon(Icons.arrow_forward_outlined)
+                            ],
+                          ),
                         ),
-                        child: Center(
-                            child: Text(
-                          "View Details..",
-                          style: TextStyle(
-                              fontSize: 17,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        )),
                       )
                     ],
                   ),
