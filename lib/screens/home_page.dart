@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:weather_api_clone/bloc/bloc_event.dart';
 import 'package:weather_api_clone/screens/view_more.dart';
 import 'package:weather_api_clone/utils/color_constant.dart';
-
 import '../bloc/bloc_state.dart';
 import '../bloc/weather_bloc.dart';
 
